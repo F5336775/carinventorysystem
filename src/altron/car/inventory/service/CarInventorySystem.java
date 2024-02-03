@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CarInventorySystem {
     private final List<Car> cars;
@@ -33,19 +34,13 @@ public class CarInventorySystem {
     }
 
     public void showCars() {
-        for (Car car : cars) {
-            System.out.println(car.displayInfo());
-        }
+        cars.stream().forEach(System.out::println);
     }
 
     public List<Car> searchCars(String make) {
-        List<Car> result = new ArrayList<>();
-        for (Car car : cars) {
-            if (car.displayInfo().contains(make)) {
-                result.add(car);
-            }
-        }
-        return result;
+        return cars.stream()
+                .filter(car -> car.displayInfo().contains(make))
+                .collect(Collectors.toList());
     }
 
     public void sortCarsBy(String property) {
@@ -66,7 +61,7 @@ public class CarInventorySystem {
         carInventorySystem.addCar(new Car("Auid","A3",2020));
 
         // Testing the functions
-        System.out.println(carInventorySystem.searchCars("Tesla"));
+        System.out.println(carInventorySystem.searchCars("BMW"));
         carInventorySystem.sortCarsBy("year");
         carInventorySystem.showCars();
     }
