@@ -1,7 +1,9 @@
 package altron.car.inventory.domain;
 
+import java.util.Objects;
+
 // Car class
-public class Car {
+public class Car implements Comparable<Car> {
     // Encapsulation :All the properties are private and accessors and mutator methods provided.
     private String make;
     private String model;
@@ -53,5 +55,22 @@ public class Car {
                 ", model='" + model + '\'' +
                 ", year=" + year +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Car o) {
+        return Integer.compare(this.year, o.year);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Car car)) return false;
+        return year == car.year && Objects.equals(make, car.make) && Objects.equals(model, car.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(make, model, year);
     }
 }

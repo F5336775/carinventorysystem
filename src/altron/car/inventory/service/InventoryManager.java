@@ -3,16 +3,15 @@ package altron.car.inventory.service;
 import altron.car.inventory.domain.Car;
 import altron.car.inventory.domain.ElectricCar;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CarInventorySystem {
+public class InventoryManager {
     private final List<Car> cars;
 
-    public CarInventorySystem(List<Car> cars) {
+    public InventoryManager(List<Car> cars) {
         this.cars = cars;
     }
 
@@ -44,25 +43,22 @@ public class CarInventorySystem {
     }
 
     public void sortCarsBy(String property) {
-        if ("year".equals(property)) {
-            Collections.sort(cars, Comparator.comparingInt(Car::getYear));
+        try {
+            if ("year".equals(property)) {
+                Collections.sort(cars, Comparator.comparingInt(Car::getYear));
+            }
+
+            if ("model".equals(property)) {
+                Collections.sort(cars, Comparator.comparing(Car::getModel));
+            }
+
+            if ("make".equals(property)) {
+                Collections.sort(cars, Comparator.comparing(Car::getMake));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void main(String[] args) {
 
-        CarInventorySystem carInventorySystem = new CarInventorySystem(new ArrayList<>());
-        // Example usage
-        carInventorySystem.addCar("Toyota", "Corolla", 2020, null);
-        carInventorySystem.addCar("Tesla", "Model S", 2022, 24);
-        carInventorySystem.addCar("Ford", "Mustang", 2021, null);
-        carInventorySystem.addCar("BMW", "M3", 2021, null);
-        carInventorySystem.addCar("BMW", "i8", 2021, 50);
-        carInventorySystem.addCar(new Car("Auid","A3",2020));
-
-        // Testing the functions
-        System.out.println(carInventorySystem.searchCars("BMW"));
-        carInventorySystem.sortCarsBy("year");
-        carInventorySystem.showCars();
-    }
 }
