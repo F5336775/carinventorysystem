@@ -18,7 +18,7 @@ public class InventoryManager {
         this.cars = cars;
     }
 
-    public synchronized void addCar(String make, String model, int year, Integer batteryLife) {
+    public void addCar(String make, String model, int year, Integer batteryLife) {
         Car car;
         if (batteryLife == null) {
             car = new Car(make, model, year);
@@ -31,7 +31,7 @@ public class InventoryManager {
     //Generic method for adding ALL types of cars
     //This leaves the validation at the model creation level
     //Ensuring we don't modify the validation logic each time we add a different type of car
-    public synchronized void addCar(Car car) {
+    public void addCar(Car car) {
         cars.add(car);
     }
 

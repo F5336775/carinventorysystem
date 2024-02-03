@@ -4,12 +4,13 @@ import altron.car.inventory.domain.Car;
 import altron.car.inventory.service.InventoryManager;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CarInventoryApplication {
 
     public static void main(String[] args) {
 
-        InventoryManager inventoryManager = new InventoryManager(new ArrayList<>());
+        InventoryManager inventoryManager = new InventoryManager(new CopyOnWriteArrayList<>());
         // Example usage
         inventoryManager.addCar("Toyota", "Corolla", 2020, null);
         inventoryManager.addCar("Tesla", "Model S", 2022, 24);
