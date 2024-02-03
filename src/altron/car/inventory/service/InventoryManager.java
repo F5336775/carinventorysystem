@@ -2,6 +2,9 @@ package altron.car.inventory.service;
 
 import altron.car.inventory.domain.Car;
 import altron.car.inventory.domain.ElectricCar;
+import altron.car.inventory.exception.DisplayCarsException;
+import altron.car.inventory.exception.SearchCarStrategyException;
+import altron.car.inventory.exception.SortingStrategyException;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +18,7 @@ public class InventoryManager {
         this.cars = cars;
     }
 
-    public void addCar(String make, String model, int year, Integer batteryLife) {
+    public synchronized void addCar(String make, String model, int year, Integer batteryLife) {
         Car car;
         if (batteryLife == null) {
             car = new Car(make, model, year);
@@ -28,18 +31,28 @@ public class InventoryManager {
     //Generic method for adding ALL types of cars
     //This leaves the validation at the model creation level
     //Ensuring we don't modify the validation logic each time we add a different type of car
-    public void addCar(Car car) {
+    public synchronized void addCar(Car car) {
         cars.add(car);
     }
 
+    //Function to delete car from list
+
     public void showCars() {
-        cars.stream().forEach(System.out::println);
+        try {
+            cars.stream().forEach(System.out::println);
+        } catch (Exception e) {
+            throw new DisplayCarsException("Exception thrown while displaying the list of cars: " + e);
+        }
     }
 
     public List<Car> searchCars(String make) {
-        return cars.stream()
-                .filter(car -> car.displayInfo().contains(make))
-                .collect(Collectors.toList());
+        try {
+            return cars.stream()
+                    .filter(car -> car.displayInfo().contains(make))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new SearchCarStrategyException("Exception thrown while searching the list of cars by: " + make + " : " + e);
+        }
     }
 
     public void sortCarsBy(String property) {
@@ -56,7 +69,7 @@ public class InventoryManager {
                 Collections.sort(cars, Comparator.comparing(Car::getMake));
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SortingStrategyException("Exception thrown while sorting the list of cars by: " + property + " : " + e);
         }
     }
 
