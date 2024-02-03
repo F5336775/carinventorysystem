@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CarApp {
+public class CarInventorySystem {
     private static List<Car> cars = new ArrayList<>();
 
     public static void addCar(String make, String model, int year, Integer batteryLife) {
@@ -18,6 +18,13 @@ public class CarApp {
         } else {
             car = new ElectricCar(make, model, year, batteryLife);
         }
+        cars.add(car);
+    }
+
+    //Generic method for adding ALL types of cars
+    //This leaves the validation at the model creation level
+    //Ensuring we don't modify the validation logic each time we add a different type of car
+    public static void addCar(Car car) {
         cars.add(car);
     }
 
@@ -48,6 +55,9 @@ public class CarApp {
         addCar("Toyota", "Corolla", 2020, null);
         addCar("Tesla", "Model S", 2022, 24);
         addCar("Ford", "Mustang", 2021, null);
+        addCar("BMW", "M3", 2021, null);
+        addCar("BMW", "i8", 2021, 50);
+        addCar(new Car("Auid","A3",2020));
 
         // Testing the functions
         System.out.println(searchCars("Tesla"));
